@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Group {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  repeatedAt DateTime @updatedAt
+
+  groupName String
+  status   String
+  word      Word[]
+
+  @@map("groups")
+}
+
+model Word {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  repeatedAt  DateTime @updatedAt
+  word        String
+  translation String
+  repeatation Int
+  status     String
+  groupId     Int
+  group       Group    @relation(fields: [groupId], references: [id])
+
+  @@map("words")
+}
