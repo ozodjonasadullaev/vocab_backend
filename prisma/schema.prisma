@@ -8,51 +8,50 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  role      String   @default("user") //user , free-trial-user, subscriber, admin, moderator
-
-  email String @unique
-  hash  String
-
+  id                 Int                  @id @default(autoincrement())
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  email              String               @unique
+  hash               String
   firstName          String?
   lastName           String?
+  phone              String?
+  ipAddresses        String[]             @default([])
   country            String?
-  learningLanguages  String[]             @default(["english"])
-  subscriptionType   Int? //1 oy, 3 oy, 6 oy, 12oy
-  subscribedAt       DateTime?
+  learning_languages String[]             @default(["english"])
+  role               String               @default("user")
   courses            Course[]             @relation("UserCourses")
+  asssesments        Assessment[]
   userCourseProgress UserCourseProgress[]
   userLessonProgress UserLessonProgress[]
 }
 
 model Language {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  courses   Course[]
+  id      Int      @id @default(autoincrement())
+  name    String
+  courses Course[]
 }
 
 model Course {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id                 Int                  @id @default(autoincrement())
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
   title              String
   description        String?
+  level              String
   availableLanguages String[]
-  langageId          Int
-  language           Language             @relation(fields: [langageId], references: [id])
-  users              User[]               @relation("UserCourses")
+  language           Language             @relation(fields: [languageId], references: [id])
+  languageId         Int
   lessons            Lesson[]
+  assesments         Assessment[]
+  users              User[]               @relation("UserCourses")
   userCourseProgress UserCourseProgress[]
 }
 
 model Lesson {
+  id                 Int                  @id @default(autoincrement())
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
-  id                 Int                  @id @default(autoincrement())
   title              String
   description        String?
   courseId           Int
@@ -74,10 +73,8 @@ model Sentence {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  sentence  String?
-  langageId Int
-  words     Word[]  @relation("WordSentences")
+  title     String
+  words     Word[]   @relation("WordSentences")
 }
 
 model UserCourseProgress {
@@ -100,5 +97,18 @@ model UserLessonProgress {
   userId      Int
   isCompleted Boolean  @default(false)
   lesson      Lesson   @relation(fields: [lessonId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Assessment {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String
+  courseId    Int
+  userId      Int
+  score       Int?
+  isCompleted Boolean  @default(false)
+  course      Course   @relation(fields: [courseId], references: [id])
   user        User     @relation(fields: [userId], references: [id])
 }
