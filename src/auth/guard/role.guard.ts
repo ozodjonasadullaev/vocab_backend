@@ -23,7 +23,6 @@ export class RoleGuard implements CanActivate {
       where: { id: userId },
       select: { role: true },
     });
-    console.log(roles, user);
     if (!user || !user.role || !roles.includes(user.role)) {
       return false; // User role doesn't match required roles
     }

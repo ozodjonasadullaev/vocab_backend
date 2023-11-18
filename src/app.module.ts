@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { LanguageModule } from './language/language.module';
+import { UsersModule } from './models/users/users.module';
+import { LanguageModule } from './models/language/language.module';
+import { CourseModule } from './models/course/course.module';
+import { LessonModule } from './models/lesson/lesson.module';
 
 @Module({
   imports: [
@@ -12,6 +14,8 @@ import { LanguageModule } from './language/language.module';
     AuthModule,
     UsersModule,
     LanguageModule,
+    CourseModule,
+    LessonModule,
   ],
 })
 export class AppModule {}

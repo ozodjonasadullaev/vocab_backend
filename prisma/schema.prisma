@@ -40,8 +40,8 @@ model Course {
   description        String?
   level              String
   availableLanguages String[]
-  language           Language             @relation(fields: [languageId], references: [id])
   languageId         Int
+  language           Language             @relation(fields: [languageId], references: [id])
   lessons            Lesson[]
   assesments         Assessment[]
   users              User[]               @relation("UserCourses")
