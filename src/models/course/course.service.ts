@@ -20,7 +20,7 @@ export class CourseService {
   getCourseById(id: number) {
     return this.prisma.course.findUnique({
       where: { id },
-      include: { lessons: true },
+      include: { lessons: { include: { _count: true } }, _count: true },
     });
   }
 }
