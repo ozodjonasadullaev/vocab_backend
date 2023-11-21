@@ -6,6 +6,7 @@ import { UsersModule } from './models/users/users.module';
 import { LanguageModule } from './models/language/language.module';
 import { CourseModule } from './models/course/course.module';
 import { LessonModule } from './models/lesson/lesson.module';
+import { WordModule } from './models/word/word.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { LessonModule } from './models/lesson/lesson.module';
     LanguageModule,
     CourseModule,
     LessonModule,
+    WordModule,
   ],
 })
 export class AppModule {}

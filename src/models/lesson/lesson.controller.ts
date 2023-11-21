@@ -3,7 +3,8 @@ import { LessonService } from './lesson.service';
 import { CreateLessonDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
 import { RoleGuard } from 'src/auth/guard/role.guard';
-import { Roles } from 'src/decorators';
+import { GetUser, Roles } from 'src/decorators';
+import { User } from '@prisma/client';
 
 @UseGuards(JwtGuard)
 @Controller('lesson')
@@ -16,7 +17,18 @@ export class LessonController {
     return this.lessonService.createLesson(dto);
   }
   @Get(':id')
-  getLesson(@Param('id') id: string) {
-    return this.lessonService.getLesson(+id);
+  getLesson(@Param('id') id: string, @GetUser('id') userId: number) {
+    return this.lessonService.getLesson(+id, userId);
+  }
+  @Post('start')
+  startLesson(
+    @GetUser() user: User,
+    @Body() { courseId, lessonId }: { courseId: number; lessonId: number },
+  ) {
+    return this.lessonService.startLesson({
+      userId: user.id,
+      courseId: +courseId,
+      lessonId: +lessonId,
+    });
   }
 }
