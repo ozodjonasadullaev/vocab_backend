@@ -55,28 +55,36 @@ export class LessonService {
     lessonId: number;
     courseId: number;
   }) {
-    await this.prisma.course.update({
-      where: { id: courseId },
-      data: { users: { connect: { id: userId } } },
+    let courseP = await this.prisma.userCourseProgress.findFirst({
+      where: { userId, courseId },
     });
-    const courseProgress = await this.prisma.userCourseProgress.create({
-      data: {
-        percentage: 0,
-        user: { connect: { id: userId } },
-        course: { connect: { id: courseId } },
-      },
-    });
-    const userLessonProgress = await this.prisma.userLessonProgress.create({
+    if (!courseP) {
+      await this.prisma.course.update({
+        where: { id: courseId },
+        data: { users: { connect: { id: userId } } },
+      });
+      console.log('user enrolled to course');
+
+      courseP = await this.prisma.userCourseProgress.create({
+        data: {
+          percentage: 0,
+          user: { connect: { id: userId } },
+          course: { connect: { id: courseId } },
+        },
+      });
+      console.log('course progress created');
+    }
+    await this.prisma.userLessonProgress.create({
       data: {
         percentage: 0,
         completedWords: 0,
-        givenWords: 0,
+        givenWords: 5,
         lesson: { connect: { id: lessonId } },
         user: { connect: { id: userId } },
-        courseProgress: { connect: { id: courseProgress.id } },
+        courseProgress: { connect: { id: courseP.id } },
       },
     });
-
-    return this.wordService.nextWord(userId, userLessonProgress.id);
+    console.log('lesson progress created');
+    return this.wordService.nextWord(userId, lessonId);
   }
 }

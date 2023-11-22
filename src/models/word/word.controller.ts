@@ -13,9 +13,12 @@ export class WordController {
     private prisma: PrismaService,
   ) {}
   @Post('next')
-  nextWord(@GetUser() user: User, @Body() body: { lp: number }) {
-    console.log(body);
-    return this.wordService.nextWord(user.id, body.lp);
+  nextWord(@GetUser() user: User, @Body() body: { lessonId: number }) {
+    return this.wordService.nextWord(user.id, body.lessonId);
+  }
+  @Post('nextstep')
+  nextStep(@GetUser() user: User, @Body() body: { lessonId: number }) {
+    return this.wordService.nextstep(user.id, body.lessonId);
   }
   @Post('right')
   right(@GetUser() user: User, @Body() body: any) {
