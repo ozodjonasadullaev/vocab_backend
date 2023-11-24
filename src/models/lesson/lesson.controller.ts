@@ -27,8 +27,8 @@ export class LessonController {
   ) {
     return this.lessonService.startLesson({
       userId: user.id,
-      courseId: +courseId,
-      lessonId: +lessonId,
+      courseId: courseId,
+      lessonId: lessonId,
     });
   }
 }

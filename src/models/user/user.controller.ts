@@ -13,6 +13,10 @@ export class UserController {
   getMe(@GetUser() user: User) {
     return user;
   }
+  @Get('all')
+  getAll() {
+    return this.userService.getAll();
+  }
   @Patch()
   updateUser(@GetUser('id') userId: number, @Body() dto: UserUpdateDto) {
     return this.userService.updateUser(userId, dto);

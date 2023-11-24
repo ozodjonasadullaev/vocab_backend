@@ -10,4 +10,7 @@ export class UserService {
       data: { ...dto },
     });
   }
+  getAll() {
+    return this.prisma.user.findMany();
+  }
 }
