@@ -8,10 +8,10 @@ CREATE TABLE "User" (
     "firstName" TEXT,
     "lastName" TEXT,
     "phone" TEXT,
-    "ipAddresses" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "country" TEXT,
-    "learning_languages" TEXT[] DEFAULT ARRAY['english']::TEXT[],
+    "learningLanguages" INTEGER[] DEFAULT ARRAY[1]::INTEGER[],
     "role" TEXT NOT NULL DEFAULT 'user',
+    "languageId" INTEGER,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -56,6 +56,7 @@ CREATE TABLE "Word" (
     "word" TEXT NOT NULL,
     "translation" JSONB NOT NULL,
     "lessonId" INTEGER NOT NULL,
+    "imageUrl" TEXT,
 
     CONSTRAINT "Word_pkey" PRIMARY KEY ("id")
 );
@@ -65,7 +66,7 @@ CREATE TABLE "Sentence" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "title" TEXT NOT NULL,
+    "text" TEXT NOT NULL,
 
     CONSTRAINT "Sentence_pkey" PRIMARY KEY ("id")
 );
@@ -77,8 +78,7 @@ CREATE TABLE "UserCourseProgress" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "courseId" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
-    "isEnrolled" BOOLEAN NOT NULL DEFAULT false,
-    "isCompleted" BOOLEAN NOT NULL DEFAULT false,
+    "percentage" INTEGER NOT NULL,
 
     CONSTRAINT "UserCourseProgress_pkey" PRIMARY KEY ("id")
 );
@@ -90,7 +90,10 @@ CREATE TABLE "UserLessonProgress" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "lessonId" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
-    "isCompleted" BOOLEAN NOT NULL DEFAULT false,
+    "courseProgressId" INTEGER NOT NULL,
+    "percentage" INTEGER NOT NULL,
+    "givenWords" INTEGER NOT NULL,
+    "completedWords" INTEGER NOT NULL,
 
     CONSTRAINT "UserLessonProgress_pkey" PRIMARY KEY ("id")
 );
@@ -156,6 +159,9 @@ ALTER TABLE "UserLessonProgress" ADD CONSTRAINT "UserLessonProgress_lessonId_fke
 
 -- AddForeignKey
 ALTER TABLE "UserLessonProgress" ADD CONSTRAINT "UserLessonProgress_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserLessonProgress" ADD CONSTRAINT "UserLessonProgress_courseProgressId_fkey" FOREIGN KEY ("courseProgressId") REFERENCES "UserCourseProgress"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Assessment" ADD CONSTRAINT "Assessment_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -10,6 +10,7 @@ export class WordService {
     });
     const words = await this.prisma.word.findMany({
       where: { lessonId: lp.lessonId },
+      include: { sentences: true },
       orderBy: { id: 'asc' },
     });
 
@@ -21,6 +22,7 @@ export class WordService {
     });
     const words = await this.prisma.word.findMany({
       where: { lessonId: lp.lessonId },
+      include: { sentences: true },
       orderBy: { id: 'asc' },
     });
     await this.prisma.userLessonProgress.update({

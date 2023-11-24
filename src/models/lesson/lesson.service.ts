@@ -41,7 +41,10 @@ export class LessonService {
     });
     const ls = await this.prisma.lesson.findUnique({
       where: { id },
-      include: { _count: true, words: true },
+      include: {
+        _count: true,
+        words: { orderBy: { id: 'asc' }, include: { sentences: true } },
+      },
     });
     return { ...ls, userLessonProgress: lp };
   }
