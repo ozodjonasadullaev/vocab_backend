@@ -16,21 +16,21 @@ model User {
   firstName          String?
   lastName           String?
   phone              String?
-  ipAddresses        String[]             @default([])
   country            String?
-  learning_languages String[]             @default(["english"])
+  learningLanguages  Int[]
+  language           Language             @relation(references: [id], fields: [learningLanguages])
   role               String               @default("user")
   courses            Course[]             @relation("UserCourses")
   asssesments        Assessment[]
   userCourseProgress UserCourseProgress[]
   userLessonProgress UserLessonProgress[]
-  UserWordProgress   UserWordProgress[]
 }
 
 model Language {
   id      Int      @id @default(autoincrement())
   name    String
   courses Course[]
+  users   User[]
 }
 
 model Course {
@@ -59,17 +59,16 @@ model Lesson {
   course             Course               @relation(fields: [courseId], references: [id])
   words              Word[]
   userLessonProgress UserLessonProgress[]
-  UserWordProgress   UserWordProgress[]
 }
 
 model Word {
-  id           Int                @id @default(autoincrement())
-  word         String
-  translation  Json
-  lessonId     Int
-  wordProgress UserWordProgress[]
-  lesson       Lesson             @relation(fields: [lessonId], references: [id])
-  sentences    Sentence[]         @relation("WordSentences")
+  id          Int        @id @default(autoincrement())
+  word        String
+  translation Json
+  lessonId    Int
+  imageUrl    String
+  lesson      Lesson     @relation(fields: [lessonId], references: [id])
+  sentences   Sentence[] @relation("WordSentences")
 }
 
 model Sentence {
@@ -107,25 +106,6 @@ model UserLessonProgress {
   lesson         Lesson             @relation(fields: [lessonId], references: [id])
   user           User               @relation(fields: [userId], references: [id])
   courseProgress UserCourseProgress @relation(fields: [courseProgressId], references: [id])
-  wordProgress   UserWordProgress[]
-   
-}
-
-model UserWordProgress {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId    Int
-
-  right Int
-
-  lessonProgressId Int
-  wordId           Int
-  Word             Word               @relation(fields: [wordId], references: [id])
-  lessonProgress   UserLessonProgress @relation(fields: [lessonProgressId], references: [id])
-  user             User               @relation(fields: [userId], references: [id])
-  Lesson           Lesson?            @relation(fields: [lessonId], references: [id])
-  lessonId         Int?
 }
 
 model Assessment {
