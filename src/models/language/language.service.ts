@@ -6,9 +6,12 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class LanguageService {
   constructor(private prisma: PrismaService) {}
   createlanguage(dto: CreateLanguageDto) {
-    return this.prisma.language.create({ data: dto });
+    return this.prisma.language.create({
+      data: dto,
+      include: { courses: true },
+    });
   }
   getLanguages() {
-    return this.prisma.language.findMany();
+    return this.prisma.language.findMany({ include: { _count: true } });
   }
 }

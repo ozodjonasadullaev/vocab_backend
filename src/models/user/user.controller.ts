@@ -9,11 +9,11 @@ import { UserService } from './user.service';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
-  @Get()
+  @Get('me')
   getMe(@GetUser() user: User) {
     return user;
   }
-  @Get('all')
+  @Get()
   getAll() {
     return this.userService.getAll();
   }
