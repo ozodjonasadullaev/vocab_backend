@@ -8,7 +8,7 @@ export class LanguageService {
   createlanguage(dto: CreateLanguageDto) {
     return this.prisma.language.create({
       data: dto,
-      include: { courses: true },
+      include: { _count: true },
     });
   }
   getLanguages() {
