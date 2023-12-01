@@ -3,7 +3,8 @@ import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class CreateCourseDto {
   @IsString()
   @IsNotEmpty()
-  title: string;
+  name: string;
+  @IsString()
   description?: string;
   @IsString()
   @IsNotEmpty()

@@ -37,7 +37,7 @@ model Course {
   id                 Int                  @id @default(autoincrement())
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
-  title              String
+  name               String
   description        String?
   level              String
   availableLanguages String[]
@@ -53,7 +53,7 @@ model Lesson {
   id                 Int                  @id @default(autoincrement())
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
-  title              String
+  name               String
   description        String?
   courseId           Int
   course             Course               @relation(fields: [courseId], references: [id])

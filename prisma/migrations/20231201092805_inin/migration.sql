@@ -20,6 +20,7 @@ CREATE TABLE "User" (
 CREATE TABLE "Language" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "levels" TEXT[],
 
     CONSTRAINT "Language_pkey" PRIMARY KEY ("id")
 );
@@ -29,7 +30,7 @@ CREATE TABLE "Course" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "title" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "description" TEXT,
     "level" TEXT NOT NULL,
     "availableLanguages" TEXT[],
@@ -43,7 +44,7 @@ CREATE TABLE "Lesson" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "title" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "description" TEXT,
     "courseId" INTEGER NOT NULL,
 

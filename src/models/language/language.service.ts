@@ -12,6 +12,8 @@ export class LanguageService {
     });
   }
   getLanguages() {
-    return this.prisma.language.findMany({ include: { _count: true } });
+    return this.prisma.language.findMany({
+      include: { _count: true, courses: true },
+    });
   }
 }

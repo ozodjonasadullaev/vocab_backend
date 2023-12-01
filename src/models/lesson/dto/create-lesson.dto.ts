@@ -11,7 +11,7 @@ import { Type } from 'class-transformer';
 export class CreateLessonDto {
   @IsNotEmpty()
   @IsString()
-  title: string;
+  name: string;
   description?: string;
   @IsNotEmpty()
   @IsNumber()
