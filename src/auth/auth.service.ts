@@ -6,11 +6,13 @@ import { JwtService } from '@nestjs/jwt';
 
 import { SignInDto, SignUpDto } from './dto';
 import { ConfigService } from '@nestjs/config';
+import { EventsGateway } from 'src/models/events/events.gateway';
 
 @Injectable({})
 export class AuthService {
   constructor(
     private prisma: PrismaService,
+    private socket: EventsGateway,
     private jwt: JwtService,
     private config: ConfigService,
   ) {}
@@ -22,6 +24,8 @@ export class AuthService {
       const user = await this.prisma.user.create({
         data: { hash, ...dto },
       });
+      const users = await this.prisma.user.findMany();
+      this.socket.handleResourceChange({ source: 'user', data: users });
       return this.signToken(user.id, user.email);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {

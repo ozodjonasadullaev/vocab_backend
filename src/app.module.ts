@@ -7,6 +7,7 @@ import { LanguageModule } from './models/language/language.module';
 import { CourseModule } from './models/course/course.module';
 import { LessonModule } from './models/lesson/lesson.module';
 import { WordModule } from './models/word/word.module';
+import { EventsModule } from './models/events/events.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { WordModule } from './models/word/word.module';
     CourseModule,
     LessonModule,
     WordModule,
+    EventsModule,
   ],
 })
 export class AppModule {}
